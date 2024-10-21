@@ -1,0 +1,6 @@
+@integrator_ui_back_HostAddress = http://localhost:5039
+
+GET {{integrator_ui_back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
