@@ -23,13 +23,6 @@ public class CreateIntegrationRequest
     public string ImageUrl { get; set; }
 
     /// <summary>
-    /// Gets or sets the image version.
-    /// </summary>
-    [Required]
-    [JsonPropertyName("imageVersion")]
-    public string ImageVersion { get; set; }
-
-    /// <summary>
     /// Gets or sets the memory request.
     /// </summary>
     [Required]

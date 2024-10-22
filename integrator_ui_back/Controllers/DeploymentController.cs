@@ -22,7 +22,7 @@ public class DeploymentController(IDeploymentService deploymentService) : Contro
         CancellationToken cancellationToken = default)
     {
         var createIntegrationResult = await this._deploymentService.CreateIntegrationAsync(request.IntegrationName, request.ImageUrl, 
-            request.ImageVersion, request.MemoryRequest, request.MemoryLimit, request.Port, request.WorkerSettings, cancellationToken);
+            request.MemoryRequest, request.MemoryLimit, request.Port, request.WorkerSettings, cancellationToken);
 
         if (!createIntegrationResult.IsSuccess)
         {

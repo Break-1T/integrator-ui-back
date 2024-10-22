@@ -18,16 +18,13 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
 
     /// <inheritdoc/>
     public async Task<ServiceResult> CreateIntegrationAsync(string integrationName, string imageUrl,
-        string imageVersion, string memoryRequest, string memoryLimit, int port, WorkerSettings workerSettings, CancellationToken cancellationToken = default)
+        string memoryRequest, string memoryLimit, int port, WorkerSettings workerSettings, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(integrationName))
             return ServiceResult.FromError($"{nameof(integrationName)} has null or empty value.");
 
         if (string.IsNullOrEmpty(imageUrl))
             return ServiceResult.FromError($"{nameof(imageUrl)} has null or empty value.");
-
-        if (string.IsNullOrEmpty(imageVersion))
-            return ServiceResult.FromError($"{nameof(imageVersion)} has null or empty value.");
 
         if (string.IsNullOrEmpty(memoryRequest))
             return ServiceResult.FromError($"{nameof(memoryRequest)} has null or empty value.");
@@ -79,7 +76,7 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
             }
 
             var deploymentInfo = this.CreateDeployment(integrationName, DeploymentConstants.IntegrationNamespace, uiDeployment,
-                imageUrl, imageVersion, memoryRequest, memoryLimit, port);
+                imageUrl, memoryRequest, memoryLimit, port);
 
             var service = CreateService(integrationName, DeploymentConstants.IntegrationNamespace, port);
 
@@ -205,26 +202,19 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
     /// <summary>
     /// Creates the deployment.
     /// </summary>
-    /// <param name="clientName">Name of the client.</param>
     /// <param name="integrationName">Name of the integration.</param>
-    /// <param name="teamName">Name of the team.</param>
-    /// <param name="ns">The ns.</param>
+    /// <param name="ns">The namespace.</param>
     /// <param name="uiDeploymentInfo">The UI deployment information.</param>
-    /// <param name="garUrl">The gar URL.</param>
-    /// <param name="imageName">Name of the image.</param>
-    /// <param name="imageVersion">The image version.</param>
+    /// <param name="imageUrl">The image URL.</param>
     /// <param name="memoryRequest">The memory request.</param>
     /// <param name="memoryLimit">The memory limit.</param>
-    /// <param name="addHealthChecks">if set to <c>true</c> [add health checks].</param>
     /// <param name="port">The port.</param>
-    /// <returns>The created deployment.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException">Type - null</exception>
+    /// <returns></returns>
     private V1Deployment CreateDeployment(
         string integrationName,
         string ns,
         V1Deployment uiDeploymentInfo,
         string imageUrl,
-        string imageVersion,
         string memoryRequest,
         string memoryLimit,
         int port)
@@ -302,30 +292,6 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
                     {
                         Name = "pgsql-secret",
                         Key = "instance",
-                    }
-                },
-            },
-            new V1EnvVar
-            {
-                Name = "AdminUsername",
-                ValueFrom = new V1EnvVarSource
-                {
-                    SecretKeyRef = new V1SecretKeySelector
-                    {
-                        Name = "pgsql-secret",
-                        Key = "adminUsername",
-                    }
-                },
-            },
-            new V1EnvVar
-            {
-                Name = "AdminPassword",
-                ValueFrom = new V1EnvVarSource
-                {
-                    SecretKeyRef = new V1SecretKeySelector
-                    {
-                        Name = "pgsql-secret",
-                        Key = "adminPassword",
                     }
                 },
             },
