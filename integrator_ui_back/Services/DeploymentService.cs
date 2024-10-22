@@ -377,8 +377,8 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
         ];
 
         // No mounts should be passed from UI Container
-        container.VolumeMounts.Clear();
-        deployment.Spec.Template.Spec.Volumes.Clear();
+        container.VolumeMounts?.Clear();
+        deployment.Spec.Template.Spec.Volumes?.Clear();
 
         container.Ports =
         [

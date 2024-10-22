@@ -2,6 +2,7 @@
 using integrator_ui_back.Interfaces;
 using integrator_ui_back.Services;
 using k8s;
+using System.Text.Json;
 
 namespace integrator_ui_back.Extensions;
 
@@ -17,12 +18,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddIntegrationUI(this IServiceCollection services,
         IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
     {
-        var kubeConfigFile = Environment.GetEnvironmentVariable("KUBE_CONFIG_FILE");
-
-        var config = KubernetesClientConfiguration.IsInCluster()
-            ? KubernetesClientConfiguration.InClusterConfig()
-            : KubernetesClientConfiguration.BuildConfigFromConfigFile(kubeconfigPath: kubeConfigFile);
-
+        var config = KubernetesClientConfiguration.BuildDefaultConfig();
         services.AddSingleton<IKubernetes>(new Kubernetes(config));
 
         services.AddScoped<IDeploymentService, DeploymentService>();

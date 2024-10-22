@@ -133,10 +133,10 @@ public class DeploymentScannerHostedService : BackgroundService
                     deploymentInformation.ContainerInformationList.Add(containerInformation);
                 }
 
-                containerInformation.MemoryLimit = container.Resources?.Limits["memory"]?.CanonicalizeString();
-                containerInformation.CpuLimit = container.Resources?.Limits["cpu"]?.CanonicalizeString();
-                containerInformation.MemoryRequest = container.Resources?.Requests["memory"]?.CanonicalizeString();
-                containerInformation.CpuRequest = container.Resources?.Requests["cpu"]?.CanonicalizeString();
+                containerInformation.MemoryLimit = container.Resources?.Limits?["memory"]?.CanonicalizeString();
+                containerInformation.CpuLimit = container.Resources?.Limits?["cpu"]?.CanonicalizeString();
+                containerInformation.MemoryRequest = container.Resources?.Requests?["memory"]?.CanonicalizeString();
+                containerInformation.CpuRequest = container.Resources?.Requests?["cpu"]?.CanonicalizeString();
                 containerInformation.ImagePath = container.Image;
             }
 

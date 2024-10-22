@@ -1,4 +1,5 @@
 using integrator_ui_back.Extensions;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Net;
@@ -24,7 +25,7 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddIntegrationUI(builder.Configuration, builder.Environment);
 
 builder.Services.AddCors();
-
+builder.Services.AddHealthChecks();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddMvcCore()
     .AddDataAnnotations()
@@ -34,22 +35,27 @@ builder.Services.AddMvcCore()
         options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(context.ModelState);
     });
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
-}
+//if (builder.Environment.IsDevelopment())
+//{
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+//}
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 else
 {
@@ -57,6 +63,11 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = _ => true
+});
 
 app.UseCors(x => x
     .AllowAnyMethod()
