@@ -2,15 +2,16 @@
   "profiles": {
     "integrator_ui_back - Development": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SchedulerSettings__MaxRunTasks": "100",
-        "DatabaseSettings__ConnectionString": "Server=localhost;Port=5432;User Id=postgres;Password=postgres;Database=integration_platform_db;"
-      }
+        "DatabaseSettings__ConnectionString": "Server=localhost;Port=5432;User Id=postgres;Password=postgres;Database=integration_platform_db;",
+        "YARP_INTEGRATOR_HOST": "http://integrator.local"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:8080"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",

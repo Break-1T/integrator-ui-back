@@ -2,7 +2,7 @@
 using integrator_ui_back.Interfaces;
 using integrator_ui_back.Services;
 using k8s;
-using System.Text.Json;
+using Yarp.ReverseProxy.Configuration;
 
 namespace integrator_ui_back.Extensions;
 
@@ -23,8 +23,8 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IDeploymentService, DeploymentService>();
 
-        //services.AddSingleton<IProxyConfigProvider, ReverseProxyConfigProvider>();
-        //services.AddReverseProxy().AddTransforms(context => context.AddRequestAuthUserHeaderTransform());
+        services.AddSingleton<IProxyConfigProvider, ReverseProxyConfigProvider>();
+        services.AddReverseProxy();
 
         services.AddSingleton<DeploymentManager>();
         services.AddHostedService<DeploymentScannerHostedService>();

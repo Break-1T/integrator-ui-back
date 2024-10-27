@@ -35,12 +35,6 @@ builder.Services.AddMvcCore()
         options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(context.ModelState);
     });
 
-//if (builder.Environment.IsDevelopment())
-//{
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-//}
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -52,31 +46,25 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-app.UseHealthChecks("/health", new HealthCheckOptions
+app.MapControllers();
+app.MapSwagger();
+app.MapHealthChecks("/health", new HealthCheckOptions
 {
     Predicate = _ => true
 });
+app.MapReverseProxy();
 
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
-
-app.UseHttpsRedirection();
-
-app.MapControllers();
 
 app.Run();
