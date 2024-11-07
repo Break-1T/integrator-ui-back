@@ -34,10 +34,11 @@ jobs:
         run: |
           # Формируем версию из мажорной, минорной и номера билда
           version="${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}"
-          fullVersion = "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.${BUILD_NUMBER}"
           echo "version=$version" >> $GITHUB_ENV
-          echo "fullVersion=$fullVersion" >> $GITHUB_ENV
           echo "Собранная версия: $version"
+
+          fullVersion = "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.${BUILD_NUMBER}"
+          echo "fullVersion=$fullVersion" >> $GITHUB_ENV
           echo "Полная версия: $fullVersion"
 
       - name: Build and Push Docker Image
