@@ -4,6 +4,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
+ARG VERSION
+ENV APP_VERSION=$VERSION
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -11,7 +14,7 @@ COPY ["integrator_ui_back/integrator_ui_back.csproj", "integrator_ui_back/"]
 RUN dotnet restore "./integrator_ui_back/integrator_ui_back.csproj"
 COPY . .
 WORKDIR "/src/integrator_ui_back"
-RUN dotnet build "./integrator_ui_back.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./integrator_ui_back.csproj" -c $BUILD_CONFIGURATION -p:Version=$APP_VERSION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
