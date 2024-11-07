@@ -14,7 +14,7 @@ jobs:
       MAJOR_VERSION: 1
       MINOR_VERSION: 0
       BUILD_VERSION: ${{ github.run_number }} # Автоинкрементируемый номер билда
-      IMAGE_NAME: your_dockerhub_username/your_image_name # Укажите ваш репозиторий и имя образа на Docker Hub
+      IMAGE_NAME: taraskrupko/integrator-ui-back # Укажите ваш репозиторий и имя образа на Docker Hub
 
     steps:
       - name: Check out the code
