@@ -37,7 +37,7 @@ jobs:
           echo "version=$version" >> $GITHUB_ENV
           echo "Собранная версия: $version"
 
-          fullVersion = "${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.${BUILD_NUMBER}"
+          fullVersion="${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}.${BUILD_NUMBER}"
           echo "fullVersion=$fullVersion" >> $GITHUB_ENV
           echo "Полная версия: $fullVersion"
 
