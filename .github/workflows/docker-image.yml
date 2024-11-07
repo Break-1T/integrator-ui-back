@@ -1,0 +1,42 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - master # Запускать на основной ветке
+  workflow_dispatch: # Позволяет запускать вручную
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    env:
+      MAJOR_VERSION: 1
+      MINOR_VERSION: 0
+      BUILD_VERSION: ${{ github.run_number }} # Автоинкрементируемый номер билда
+      IMAGE_NAME: your_dockerhub_username/your_image_name # Укажите ваш репозиторий и имя образа на Docker Hub
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Calculate version
+        run: |
+          # Формируем версию из мажорной, минорной и номера билда
+          version="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_VERSION}"
+          echo "version=$version" >> $GITHUB_ENV
+          echo "Собранная версия: $version"
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t $IMAGE_NAME:${{ env.version }} -f integrator_ui_back/Dockerfile .
+          docker push $IMAGE_NAME:${{ env.version }}
