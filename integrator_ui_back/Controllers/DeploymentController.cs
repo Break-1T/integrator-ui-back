@@ -70,4 +70,19 @@ public class DeploymentController(IDeploymentService deploymentService) : Contro
 
         return this.Ok(getDeploymentInformationResult.Result);
     }
+
+    [HttpPost("restart-worker/{workerName}")]
+    public async Task<IActionResult> RestartWorker(
+        [FromRoute(Name = "workerName")] string workerName, 
+        CancellationToken cancellationToken = default)
+    {
+        var restartResult = await this._deploymentService.DeletePodsForDeploymentAsync(workerName, cancellationToken);
+
+        if (!restartResult.IsSuccess) 
+        {
+            return this.BadRequest(restartResult.ErrorMessage);
+        }
+
+        return this.Ok();
+    }
 }

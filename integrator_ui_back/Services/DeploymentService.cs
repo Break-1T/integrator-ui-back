@@ -153,6 +153,24 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
         }
     }
 
+    /// <inheritdoc/>
+    public async Task<ServiceResult> DeletePodsForDeploymentAsync(string deploymentName, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var deployment = await this._kubernetesClient.AppsV1.ReadNamespacedDeploymentAsync(deploymentName, DeploymentConstants.IntegrationNamespace, null, cancellationToken);
+            var labels = string.Join(",", deployment.Labels().Select(x=> $"{x.Key}={x.Value}"));
+            var pods = await this._kubernetesClient.CoreV1.DeleteCollectionNamespacedPodAsync(DeploymentConstants.IntegrationNamespace, labelSelector: labels);
+
+            return ServiceResult.FromSuccess();
+        }
+        catch (Exception e)
+        {
+            this._logger.LogError(e, $"Unexpected error: could not get restart deployment {deploymentName}");
+            return ServiceResult.FromError($"Unexpected error: could not get restart deployment {deploymentName}");
+        }
+    }
+
     /// <summary>
     /// Creates the custom configuration map.
     /// </summary>

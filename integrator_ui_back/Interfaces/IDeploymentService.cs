@@ -40,4 +40,11 @@ public interface IDeploymentService
     /// <returns>ServiceResult</returns>
     ServiceResult<List<DeploymentInformation>> GetAllDeploymentInformation();
 
+    /// <summary>
+    /// Deletes the pods for deployment asynchronous.
+    /// </summary>
+    /// <param name="deploymentName">Name of the deployment.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task<ServiceResult> DeletePodsForDeploymentAsync(string deploymentName, CancellationToken cancellationToken = default);
+
 }
