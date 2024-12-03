@@ -41,7 +41,7 @@ public class CreateIntegrationRequest
     /// </summary>
     [JsonPropertyName("port")]
     public int Port { get; set; } = 8080;
-
+    
     /// <summary>
     /// Gets or sets the worker settings.
     /// </summary>

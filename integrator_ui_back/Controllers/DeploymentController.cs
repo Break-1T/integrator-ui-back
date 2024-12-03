@@ -1,9 +1,11 @@
 ﻿using integrator_ui_back.Interfaces;
 using integrator_ui_back.Models.RequestModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace integrator_ui_back.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class DeploymentController(IDeploymentService deploymentService) : ControllerBase

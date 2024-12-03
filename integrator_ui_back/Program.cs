@@ -1,6 +1,5 @@
 using integrator_ui_back.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Net;
 
@@ -24,23 +23,10 @@ builder.Configuration.AddEnvironmentVariables();
 // Add services to the container.
 builder.Services.AddIntegrationUI(builder.Configuration, builder.Environment);
 
-builder.Services.AddCors();
-builder.Services.AddHealthChecks();
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddMvcCore()
-    .AddDataAnnotations()
-    .AddApiExplorer()
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(context.ModelState);
-    });
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-
-
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();

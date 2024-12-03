@@ -8,7 +8,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SchedulerSettings__MaxRunTasks": "100",
         "DatabaseSettings__ConnectionString": "Server=localhost;Port=5432;User Id=postgres;Password=postgres;Database=integration_platform_db;",
-        "YARP_INTEGRATOR_HOST": "http://integrator.local"
+        "YARP_INTEGRATOR_HOST": "http://integrator.local",
+        "IDENTITY_SERVER__URL": "http://localhost:8081",
+        "IDENTITY_SERVER__CLIENT_ID": "test_client_id",
+        "IDENTITY_SERVER__CLIENT_SECRET": "test_client_secret",
+        "IDENTITY_SERVER__CLIENT_NAME": "test_client_name"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:8080"
