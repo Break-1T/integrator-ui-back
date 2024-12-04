@@ -50,7 +50,7 @@ app.MapReverseProxy();
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true)
+    .AllowAnyOrigin()
     .AllowCredentials());
 
 app.Run();
