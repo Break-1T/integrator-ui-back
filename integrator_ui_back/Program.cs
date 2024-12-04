@@ -47,10 +47,6 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 });
 app.MapReverseProxy();
 
-app.UseCors(x => x
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowAnyOrigin()
-    .AllowCredentials());
+app.UseCors("AllowSpecificOrigins");
 
 app.Run();

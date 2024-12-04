@@ -86,9 +86,23 @@ public static class ServiceCollectionExtensions
                 // only for development
                 options.RequireHttpsMetadata = false;
             });
-        
 
-        services.AddCors();
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigins", builder =>
+            {
+                builder.WithOrigins(
+                    "http://localhost:8080",         // development
+                    "http://localhost:8081",         // development
+                    "http://integrator.local"        // prod
+                )
+                .AllowAnyMethod()                     
+                .AllowAnyHeader()                     
+                .AllowCredentials();                  
+            });
+        });
+
         services.AddHealthChecks();
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddMvcCore()
