@@ -95,7 +95,8 @@ public static class ServiceCollectionExtensions
                 builder.WithOrigins(
                     "http://localhost:8080",         // development
                     "http://localhost:8081",         // development
-                    "http://integrator.local"        // prod
+                    "http://tkrupko-integrator",
+                    "http://tkrupko-integrator.api"// prod
                 )
                 .AllowAnyMethod()                     
                 .AllowAnyHeader()                     
