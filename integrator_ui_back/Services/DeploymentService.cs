@@ -7,14 +7,16 @@ using k8s.Models;
 using System.Collections.Generic;
 using System.Text;
 using Teamwork.Integrator.Core.Classes;
+using Yarp.ReverseProxy.Configuration;
 
 namespace integrator_ui_back.Services;
 
-public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes kubernetes, DeploymentManager deploymentManager) : IDeploymentService
+public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes kubernetes, DeploymentManager deploymentManager, IProxyConfigProvider proxyConfigProvider) : IDeploymentService
 {
     private readonly DeploymentManager _deploymentManager = deploymentManager;
     private readonly IKubernetes _kubernetesClient = kubernetes;
     private readonly ILogger<DeploymentService> _logger = logger;
+    private readonly IProxyConfigProvider _proxyConfigProvider = proxyConfigProvider;
 
     /// <inheritdoc/>
     public async Task<ServiceResult> CreateIntegrationAsync(string integrationName, string imageUrl,
@@ -97,16 +99,11 @@ public class DeploymentService(ILogger<DeploymentService> logger, IKubernetes ku
 
             await this._kubernetesClient.AppsV1.CreateNamespacedDeploymentAsync(deploymentInfo, DeploymentConstants.IntegrationNamespace);
 
-            //if (this._configProvider is ReverseProxyConfigProvider reverseProxyConfigProvider)
-            //{
-            //    reverseProxyConfigProvider.Init();
-            //}
+            if (this._proxyConfigProvider is ReverseProxyConfigProvider reverseProxyConfigProvider)
+            {
+                reverseProxyConfigProvider.Init();
+            }
 
-            //await this.UpdateSwaggerConfig(
-            //    workerName: workerName,
-            //    currentRequest: this.Request,
-            //    integrationType: integrationType,
-            //    cancellationToken: cancellationToken);
             return ServiceResult.FromSuccess();
         }
         catch (Exception e)
